@@ -4,4 +4,4 @@ threadsafe: true
 
 handlers:
   - url: /.*
-    script: api.app
+    script: letshang.app.api

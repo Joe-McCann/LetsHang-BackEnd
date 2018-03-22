@@ -7,7 +7,7 @@ from __future__ import print_function
 import logging
 import json
 
-from api.hooks import api_key, say_bye_after_operation
+from letshang.hooks import api_key, say_bye_after_operation
 
 import falcon
 
