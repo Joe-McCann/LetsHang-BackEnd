@@ -4,8 +4,8 @@
 #from __future__ import division
 #from __future__ import print_function
 
-from letshang.middleware import AuthMiddleware
-from letshang.resources import Resource
+from .middleware import AuthMiddleware
+from .resources.events import eventsResource
 
 import falcon
 
@@ -19,5 +19,5 @@ def generic_error_handler(ex, req, resp, params):
         raise ex
 
 api = falcon.API(middleware=[ AuthMiddleware() ])
-api.add_route('/', Resource())
+api.add_route('/events', eventsResource())
 api.add_error_handler(Exception, generic_error_handler)
