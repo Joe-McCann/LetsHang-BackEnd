@@ -7,9 +7,12 @@
 from .middleware import AuthMiddleware
 from .resources.events import eventsResource
 from .resources.map import mapResource
-from .resources.profile import profileResource
+from .resources.profile import ProfileResource
 
 import falcon
+
+# This is for running the VS Code interactive debugger
+# import waitress
 
 def generic_error_handler(ex, req, resp, params):
 
@@ -23,5 +26,7 @@ def generic_error_handler(ex, req, resp, params):
 api = falcon.API(middleware=[ AuthMiddleware() ])
 api.add_route('/events', eventsResource())
 api.add_route('/map', mapResource())
-api.add_route('/profile', profileResource())
+api.add_route('/profile/{userId}', ProfileResource())
 api.add_error_handler(Exception, generic_error_handler)
+
+# waitress.serve(api, port=8080)

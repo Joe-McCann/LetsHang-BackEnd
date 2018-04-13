@@ -1,1 +1,1 @@
-dev_appserver .
+waitress-serve --port=8080 letshang:app.api
