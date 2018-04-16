@@ -8,6 +8,7 @@ from .middleware import AuthMiddleware
 from .resources.events import eventsResource
 from .resources.map import mapResource
 from .resources.profile import ProfileResource
+from .Map_API.mapMaker import mapMaker
 
 import falcon
 
@@ -27,6 +28,7 @@ api = falcon.API(middleware=[ AuthMiddleware() ])
 api.add_route('/events', eventsResource())
 api.add_route('/map', mapResource())
 api.add_route('/profile/{userId}', ProfileResource())
+api.add_route('/mapMaker', mapMaker())
 api.add_error_handler(Exception, generic_error_handler)
 
 # waitress.serve(api, port=8080)
