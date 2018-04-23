@@ -8,6 +8,7 @@ from .middleware import AuthMiddleware
 from .resources.events import eventsResource
 from .resources.map import mapResource
 from .resources.profile import ProfileResource
+from falcon_cors import CORS
 
 import falcon
 
@@ -23,7 +24,9 @@ def generic_error_handler(ex, req, resp, params):
     else:
         raise ex
 
-api = falcon.API(middleware=[ AuthMiddleware() ])
+cors = CORS(allow_origins_list = ['http://lets-hang.test:9080'])
+
+api = falcon.API(middleware=[ AuthMiddleware(), cors.middleware ])
 api.add_route('/events', eventsResource())
 api.add_route('/map', mapResource())
 api.add_route('/profile/{userId}', ProfileResource())
