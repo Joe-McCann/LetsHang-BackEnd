@@ -32,6 +32,7 @@ api = falcon.API(middleware=[ cors.middleware, AuthMiddleware() ])
 api.add_route('/events', eventsResource())
 api.add_route('/map', mapResource())
 api.add_route('/profile/{userId}', ProfileResource())
+# api.add_route('/mapMaker', mapMaker())
 api.add_error_handler(Exception, generic_error_handler)
 
 # waitress.serve(api, port=8080)
