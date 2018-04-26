@@ -11,9 +11,12 @@ class AuthMiddleware(object):
     """."""
 
     def process_request(self, req, resp):
-        token = req.get_header('Authorization')
-        if token is None or not self._token_is_valid():
-            raise falcon.HTTPUnauthorized(description='Auth token required')
+        if req.method == 'OPTIONS':
+            resp.set_header('Access-Control-Allow-Methods', ','.join(['DELETE','GET','POST','PUT']))
+        else:
+            token = req.get_header('Authorization')
+            if token is None or not self._token_is_valid():
+                raise falcon.HTTPUnauthorized(description='Auth token required')
 
     def _token_is_valid(self):
         return True  # You should do this better!

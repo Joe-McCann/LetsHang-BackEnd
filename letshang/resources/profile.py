@@ -3,6 +3,7 @@
 import falcon
 import json
 from ..firebase.profilestore import ProfileStore
+from falcon_cors import CORS
 
 class ProfileResource(object):
     """

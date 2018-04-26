@@ -24,9 +24,11 @@ def generic_error_handler(ex, req, resp, params):
     else:
         raise ex
 
-cors = CORS(allow_origins_list = ['http://lets-hang.test:9080'])
+cors = CORS(allow_all_origins=True,
+            allow_all_headers=True,
+            allow_methods_list=['DELETE','GET','POST','PUT'])
 
-api = falcon.API(middleware=[ AuthMiddleware(), cors.middleware ])
+api = falcon.API(middleware=[ cors.middleware, AuthMiddleware() ])
 api.add_route('/events', eventsResource())
 api.add_route('/map', mapResource())
 api.add_route('/profile/{userId}', ProfileResource())
