@@ -1,9 +1,5 @@
 """API MODULE"""
 
-#from __future__ import absolute_import
-#from __future__ import division
-#from __future__ import print_function
-
 from .middleware import AuthMiddleware
 from .resources.events import eventsResource
 from .resources.map import mapResource
@@ -11,6 +7,10 @@ from .resources.profile import ProfileResource
 from falcon_cors import CORS
 
 import falcon
+import logging
+
+logging.basicConfig(filename='letshang-backend.log', level=logging.DEBUG)
+logging.info('*** Starting the Let\'s Hang Server ***')
 
 # This is for running the VS Code interactive debugger
 # import waitress
@@ -36,3 +36,4 @@ api.add_route('/profile/{userId}', ProfileResource())
 api.add_error_handler(Exception, generic_error_handler)
 
 # waitress.serve(api, port=8080)
+logging.debug('app.py, Application housekeeping completed')

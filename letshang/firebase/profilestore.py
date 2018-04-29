@@ -2,6 +2,7 @@
 from ..Auth0.user import User
 import google.cloud.exceptions
 from ..globals import db
+import logging
 
 class ProfileStore(object):
     """
@@ -22,6 +23,8 @@ class ProfileStore(object):
         self.email = ""
         self.newMember = True
 
+        logging.debug('Initialize the Store')
+
     def getProfile(self, userId):
         """
         getProfile method
@@ -37,9 +40,10 @@ class ProfileStore(object):
         self.id = userId
         reference = db.collection(u'people').document(self.id)
 
+        logging.debug('Getting from Google = {id}'.format(id=self.id))
+
         try:
             document = reference.get().to_dict()
-
             self.firstName = document['firstName']
             self.lastName = document['lastName']
             self.nickName = document['nickName']
@@ -47,9 +51,11 @@ class ProfileStore(object):
             self.address = document['address']
             self.email = document['email']
             self.newMember = False
+            logging.debug('User found {firstname} {lastname}'.format(firstname=self.firstName, lastname=self.lastName))
             
         except google.cloud.exceptions.NotFound:
             # First we call Auth0 to obtain the user profile
+            logging.debug('User not found userId = {userId}'.format(userId=userId))
             auth0User = User()
             auth0User.getUser(userId)
 
@@ -92,7 +98,7 @@ class ProfileStore(object):
         try:
             db.collection(u'people').document(userId).delete()
         except google.cloud.exceptions.NotFound:
-            print("Nothing to delete, id = {userId}".format(userId=userId))
+            logging.error("Nothing to delete, id = {userId}".format(userId=userId))
 
     def asJson(self):
         """

@@ -2,6 +2,7 @@
 
 import falcon
 import json
+import logging
 from ..firebase.profilestore import ProfileStore
 from falcon_cors import CORS
 
@@ -22,6 +23,7 @@ class ProfileResource(object):
         resp      HTTP response (outgoing)
         userId    The userID of the user's profile passed in the URI
         """
+        logging.debug('Get user = {userId}'.format(userId=userId))
         store = ProfileStore()
         store.getProfile(userId)
 

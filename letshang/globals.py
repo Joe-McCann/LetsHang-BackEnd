@@ -5,6 +5,7 @@ from firebase_admin import firestore
 
 import json
 import requests
+import logging
 
 cred = credentials.Certificate('./letshang/firebase/letshang-version-000-firebase-adminsdk-4211i-c54a69eb6b.json')
 firebase_admin.initialize_app(cred, { 'projectId': 'letshang-version-000', })
@@ -31,11 +32,11 @@ def getAuth0Token():
         r = requests.post(base_url, data=payload)
         r.raise_for_status()
     except requests.exceptions.HTTPError as err:
-        print("Error occured retrieving Auth0 access tokey.")
-        print(err)
+        logging.error("Error occured retrieving Auth0 access token.")
+        logging.error(err)
         return None
 
     oauth = r.json()
     return oauth['access_token']
 
-token = getAuth0Token
+token = getAuth0Token()
