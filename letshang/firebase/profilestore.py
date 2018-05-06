@@ -25,6 +25,22 @@ class ProfileStore(object):
 
         logging.debug('Initialize the Store')
 
+    def setAll(self, profile):
+        """
+        setAll method
+        This method will set all the values of the class based on an
+        object with similar properties
+        """
+
+        self.id = profile['id']
+        self.firstName = profile['firstName']
+        self.lastName = profile['lastName']
+        self.nickName = profile['nickName']
+        self.address = profile['address']
+        self.phone = profile['phone']
+        self.email = profile['email']
+        self.newMember = False
+
     def getProfile(self, userId):
         """
         getProfile method
@@ -87,7 +103,16 @@ class ProfileStore(object):
         """
 
         reference = db.collection(u'people').document(self.id)
-        reference.update(self.asJson())
+
+        logging.debug('Updating on Google = {id}'.format(id=self.id))
+
+        try:
+            reference.update(self.asJson())
+        except google.cloud.exceptions.NotFound:
+            logging.debug('User not found userId = {userId}'.format(userId=userId))
+            self.addProfile()
+            
+        return self
 
     def deleteProfile(self, userId):
         """
