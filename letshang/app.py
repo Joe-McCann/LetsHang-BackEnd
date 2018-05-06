@@ -28,7 +28,7 @@ cors = CORS(allow_all_origins=True,
             allow_all_headers=True,
             allow_methods_list=['DELETE','GET','POST','PUT'])
 
-api = falcon.API(middleware=[ cors.middleware, AuthMiddleware() ])
+application = api = falcon.API(middleware=[ cors.middleware, AuthMiddleware() ])
 api.add_route('/events', eventsResource())
 api.add_route('/map', mapResource())
 api.add_route('/profile/{userId}', ProfileResource())
