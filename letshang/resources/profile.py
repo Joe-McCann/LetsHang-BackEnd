@@ -57,7 +57,7 @@ class ProfileResource(object):
 
         if req.content_length:
             store = ProfileStore()
-            profile = json.load(req.stream)
+            profile = json.loads(req.stream.read().decode('utf-8'))
             store.setAll(profile)
             store.updateProfile()
 
