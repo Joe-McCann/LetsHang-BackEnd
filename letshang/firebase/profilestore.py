@@ -82,14 +82,31 @@ class ProfileStore(object):
             self.nickName = auth0User.nickName
 
             # Then we write the object back to Firebase
-            self.addProfile()
+            self.add2Firebase()
 
         # Finally we return the profile object    
         return self
 
     def addProfile(self):
         """
-        addProfile method
+        updateProfile method
+        This function updates a document (record) that is already stored on Firestore.
+        """
+
+        reference = db.collection(u'people').document(self.id)
+
+        logging.debug('Adding to Google = {id}'.format(id=self.id))        
+
+        try:
+            self.add2Firebase()
+        except google.cloud.exceptions.Error:
+            logging.debug('Problem saving userId = {userId}'.format(userId=self.id))
+            
+        return self
+
+    def add2Firebase(self):
+        """
+        add2Firebase method
         This function stores the current object properties in the Google Cloud Firestore.
         Use this method for adding new records to the database
         """
@@ -109,8 +126,8 @@ class ProfileStore(object):
         try:
             reference.update(self.asJson())
         except google.cloud.exceptions.NotFound:
-            logging.debug('User not found userId = {userId}'.format(userId=userId))
-            self.addProfile()
+            logging.debug('User not found userId = {userId}'.format(userId=self.id))
+            self.add2Firebase()
             
         return self
 
