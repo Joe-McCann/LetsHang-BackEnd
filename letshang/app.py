@@ -4,6 +4,7 @@ from .middleware import AuthMiddleware
 from .resources.events import eventsResource
 from .resources.map import mapResource
 from .resources.profile import ProfileResource
+from .resources.friends import FriendsResource
 from falcon_cors import CORS
 
 import falcon
@@ -32,6 +33,7 @@ application = api = falcon.API(middleware=[ cors.middleware, AuthMiddleware() ])
 api.add_route('/events', eventsResource())
 api.add_route('/map', mapResource())
 api.add_route('/profile/{userId}', ProfileResource())
+api.add_route('/friends/{userId}', FriendsResource())
 # api.add_route('/mapMaker', mapMaker())
 api.add_error_handler(Exception, generic_error_handler)
 

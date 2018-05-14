@@ -9,7 +9,7 @@ from falcon_cors import CORS
 class ProfileResource(object):
     """
     profileResource class
-    This class handles the REST API resource for a map
+    This class handles the REST API resource for user profiles
     """
 
     def on_get(self, req, resp, userId):
