@@ -12,7 +12,7 @@ import logging
 logging.basicConfig(filename='letshang-backend.log', level=logging.DEBUG)
 logging.info('*** Starting the Let\'s Hang Server ***')
 
-# This is for running the VS Code interactive debugger
+#!!! This is for running the VS Code interactive debugger
 # import waitress
 
 def generic_error_handler(ex, req, resp, params):
@@ -35,5 +35,6 @@ api.add_route('/profile/{userId}', ProfileResource())
 # api.add_route('/mapMaker', mapMaker())
 api.add_error_handler(Exception, generic_error_handler)
 
+#!!! This is for running the VS Code interactive debugger
 # waitress.serve(api, port=8080)
 logging.debug('app.py, Application housekeeping completed')
