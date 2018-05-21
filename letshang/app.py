@@ -10,6 +10,17 @@ from falcon_cors import CORS
 import falcon
 import logging
 
+# -------------------------------------------------------------------------------
+# Support for the VS Code debugger
+# -------------------------------------------------------------------------------
+# import ptvsd
+#
+# address = ('localhost', 8010)
+# ptvsd.enable_attach('my_secret', address)
+# ptvsd.wait_for_attach()
+# print('connected')
+# -------------------------------------------------------------------------------
+
 logging.basicConfig(filename='letshang-backend.log', level=logging.DEBUG)
 logging.info('*** Starting the Let\'s Hang Server ***')
 

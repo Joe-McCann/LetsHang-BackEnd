@@ -1,6 +1,7 @@
 """Profile Store Submodule"""
 from ..Auth0.user import User
 import google.cloud.exceptions
+from ..firebase.friendliststore import FriendListStore
 from ..globals import db
 import logging
 
@@ -23,7 +24,16 @@ class ProfileStore(object):
         self.email = ""
         self.newMember = True
 
-        logging.debug('Initialize the Store')
+        logging.debug('Initialize the Profile Store')
+
+    def notFromUs(self, userId):
+        """
+        notNewSignup method
+        check to see if the member id was created by Lets-Hang
+        """
+        if userId.split("|")[0].lower() != "lets-hang":
+            return True
+        return False
 
     def setAll(self, profile):
         """
@@ -112,6 +122,12 @@ class ProfileStore(object):
         """
 
         db.collection(u'people').document(self.id).set(self.asJson())
+
+        # We're not done yet. If this new profile is a new member registering, then we must
+        # also give them a friend list. We determine this by scanning the user id.
+        if self.notFromUs(self.id):
+            store = FriendListStore(self.id)
+            store.newFriends()
 
     def updateProfile(self):
         """
