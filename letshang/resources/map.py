@@ -42,4 +42,4 @@ class mapResource(object):
             ret_data = mMaker.getDict()
 
         resp.body = json.dumps(ret_data, ensure_ascii=False)
-        resp.status = falcon.HTTP_404
+        resp.status = falcon.HTTP_200
