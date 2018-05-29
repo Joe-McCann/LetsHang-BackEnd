@@ -70,6 +70,7 @@ class ProfileStore(object):
 
         try:
             document = reference.get().to_dict()
+            logging.debug('getProfile retrieved {document} from Firebase'.format(document=document))
             self.firstName = document['firstName']
             self.lastName = document['lastName']
             self.nickName = document['nickName']
@@ -81,7 +82,7 @@ class ProfileStore(object):
             
         except google.cloud.exceptions.NotFound:
             # First we call Auth0 to obtain the user profile
-            logging.debug('User not found userId = {userId}'.format(userId=userId))
+            logging.debug('User not found in getProfile userId = {userId}'.format(userId=userId))
             auth0User = User()
             auth0User.getUser(userId)
 
@@ -120,14 +121,15 @@ class ProfileStore(object):
         This function stores the current object properties in the Google Cloud Firestore.
         Use this method for adding new records to the database
         """
-
+        logging.debug('In add2Firebase id = {userId}'.format(userId=self.id))
         db.collection(u'people').document(self.id).set(self.asJson())
 
         # We're not done yet. If this new profile is a new member registering, then we must
         # also give them a friend list. We determine this by scanning the user id.
         if self.notFromUs(self.id):
-            store = FriendListStore(self.id)
-            store.newFriends()
+            logging.debug('In add2Firebase checked notFromUs id = {userId}'.format(userId=self.id))
+            store = FriendListStore()
+            store.newFriends(self.id)
 
     def updateProfile(self):
         """
@@ -142,7 +144,7 @@ class ProfileStore(object):
         try:
             reference.update(self.asJson())
         except google.cloud.exceptions.NotFound:
-            logging.debug('User not found userId = {userId}'.format(userId=self.id))
+            logging.debug('User not found in updateProfile userId = {userId}'.format(userId=self.id))
             self.add2Firebase()
             
         return self
@@ -174,4 +176,34 @@ class ProfileStore(object):
             'phone': self.phone
         }
         return data
+
+    def ids2Profiles(self, friendIds):
+        """
+        ids2Profiles method
+        Convert a list of members ids to a list of profiles of the members
+        """
+
+        logging.debug('Convert ids to profiles for {ids}'.format(ids=friendIds))
+
+        userId = friendIds['id']
+        friends = friendIds['friends']
+        profileList = []
+
+        for friend in friends:
+            self.getProfile(friend)
+
+            profile = {
+                'id' : self.id,
+                'firstName' : self.firstName,
+                'lastName' : self.lastName,
+                'nickName' : self.nickName,
+                'phone' : self.phone,
+                'address' : self.address,
+                'email' : self.email,
+                'newMember' : self.newMember
+            }
+            profileList.append(profile)
+        
+        logging.debug('The friends are {profileList}'.format(profileList=profileList))
+        return profileList
         

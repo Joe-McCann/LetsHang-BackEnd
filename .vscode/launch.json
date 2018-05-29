@@ -18,7 +18,7 @@
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "${workspaceFolder}",
             "port": 8010,
-            "secret": "my_secret",
+            "secret": "fireupchips",
             "host": "localhost"
         },
         {

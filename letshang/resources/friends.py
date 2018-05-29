@@ -3,6 +3,7 @@
 import falcon
 import json
 import logging
+from ..firebase.profilestore import ProfileStore
 from ..firebase.friendliststore import FriendListStore
 from falcon_cors import CORS
 
@@ -26,9 +27,15 @@ class FriendsResource(object):
         logging.debug('Get friends = {userId}'.format(userId=userId))
 
         # format the response 200
+        friendStore = FriendListStore()
+        friends = friendStore.getFriends(userId)
+        logging.debug('Returning friends for {friends}'.format(friends=friends))
+        profileStore = ProfileStore()
+        profiles = profileStore.ids2Profiles(friends)
+
         friendlist = {
-            'id' : userId,
-            'friends' : []
+            'id': userId,
+            'friends': profiles
         }
 
         resp.body = json.dumps(friendlist, ensure_ascii=False)
@@ -45,11 +52,12 @@ class FriendsResource(object):
         resp      HTTP response (outgoing)
         userId    The userID of the user's friend list passed in the URI
         """
-        logging.debug('Put friend lsit = {userId}'.format(userId=userId))
+        logging.debug('Put friend list = {userId}'.format(userId=userId))
 
         if req.content_length:
-            store = FriendListStore(userId)
+            store = FriendListStore()
             friends = json.loads(req.stream.read().decode('utf-8'))
+            logging.debug('putFriend request body is {friends}'.format(friends=friends))
             store.saveFriends(friends)
         else:
             message = 'The body of the request must contain a list of friends'
