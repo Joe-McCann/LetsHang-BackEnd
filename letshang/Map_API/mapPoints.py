@@ -1,8 +1,9 @@
 import gmaps
 
 class Point:
-    def __init__(self, address, color, googleMapsCall, lt=None, lg=None):
+    def __init__(self, uid, address, color, googleMapsCall, lt=None, lg=None):
         if(lt == None and lg == None):
+            self.id = uid
             self.address = address
             lat, lon = googleMapsCall.address_to_longlat(address)
             self.latitude = lat
