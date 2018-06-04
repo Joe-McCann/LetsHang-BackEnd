@@ -3,6 +3,7 @@
 import falcon
 import json
 import letshang.Map_API.mapMaker as mapMaker
+from falcon_cors import CORS
 
 class mapResource(object):
     """
