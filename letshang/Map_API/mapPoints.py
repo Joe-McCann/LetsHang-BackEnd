@@ -10,12 +10,13 @@ class Point:
             self.longitude = lon
             self.color = color
         else:
+            self.id = "center"
             self.latitude = lt
             self.longitude = lg
             self.color = color
 
     def getDict(self):
-        return {"position": {"lat":self.latitude, "lng":self.longitude}, "icon":self.getMarkerCode()}
+        return {"position": {"lat":self.latitude, "lng":self.longitude}, "color": self.color, "id":self.id}
         
     def getMarkerCode(self):
         s = '''(new google.maps.MarkerImage('http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + {0},
