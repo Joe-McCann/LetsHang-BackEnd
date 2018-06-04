@@ -5,6 +5,7 @@ from .resources.events import eventsResource
 from .resources.map import mapResource
 from .resources.profile import ProfileResource
 from .resources.friends import FriendsResource
+from .resources.event import EventResource
 from falcon_cors import CORS
 
 import falcon
@@ -38,7 +39,8 @@ cors = CORS(allow_all_origins=True,
             allow_methods_list=['DELETE','GET','POST','PUT'])
 
 application = api = falcon.API(middleware=[ cors.middleware, AuthMiddleware() ])
-api.add_route('/events', eventsResource())
+api.add_route('/events/{userId}', eventsResource())
+api.add_route('/event/{eventId}', EventResource())
 api.add_route('/map', mapResource())
 api.add_route('/profile/{userId}', ProfileResource())
 api.add_route('/friends/{userId}', FriendsResource())

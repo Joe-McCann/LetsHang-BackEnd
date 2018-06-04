@@ -43,7 +43,7 @@ class FriendsResource(object):
 
     def on_put(self, req, resp, userId):
         """
-        on_post method
+        on_put method
         This method handles the REST get verb. This function should only be
         invoked by the Falcon framework.
 

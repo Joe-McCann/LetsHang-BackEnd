@@ -93,14 +93,13 @@ class FriendListStore(object):
 
         return self
 
-
     def idOnly(self, friends):
         """
         idOnly method
         This function returns a list of ids from a list of profiles
         """
 
-        logging.debug('In idOnly with {friends}'.format(friends=friends))
+        logging.debug('friendliststore.py, idOnly, In idOnly with {friends}'.format(friends=friends))
         ids = []
         for profile in friends:
             ids.append(profile['id'])

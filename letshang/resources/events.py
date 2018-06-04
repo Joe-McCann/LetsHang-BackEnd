@@ -9,7 +9,7 @@ class eventsResource(object):
     This class handles the REST API resource for events.
     """
 
-    def on_get(self, req, resp):
+    def on_get(self, req, resp, userId):
         """
         on_get method
         This method handles the REST get verb. This function should only be
@@ -22,6 +22,7 @@ class eventsResource(object):
         Currently this method returns a hardcoded response. The response event list contains
         two events and each event contains two people.
         """
+        logging.debug('events.py, on_get, Get events = {userId}'.format(userId=userId))
         
         # Hardcoding the resource until Firebase is hooked in.
         events = {
