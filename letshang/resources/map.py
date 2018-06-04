@@ -23,11 +23,9 @@ class mapResource(object):
         Request Format:
         {
             "mapData":{
-                "some_address":{
-                    "color":"hex_val"
-                },
-                "more_addresses":{
-                    "color":"hex_val"
+                "someID":{
+                    "address":"someaddress"
+                    "color":"somehex"
                 }
                 ...
             }

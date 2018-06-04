@@ -6,15 +6,18 @@ class mapMaker:
     def __init__(self, jsonReq):
         self.gm = gmaps.GMaps('AIzaSyBwr2Jg9ExjdfNl_x-ElHZRoCwQCDmPcMc')
         self.points = []
-        for address in jsonReq["mapData"]:
-            self.points.append(mapPoints.Point(address, jsonReq["mapData"][address]["color"], self.gm))
+        for key, values in jsonReq["mapData"].items():
+            self.points.append(mapPoints.Point(key, values["address"], values["color"], self.gm))
 
     def getCenterPoint(self):
         return graph.centroid([(p.getLat(), p.getLong()) for p in self.points])
 
+    def getNearbyPlaces(self, radius):
+        pass
+
     def getDict(self):
         center = self.getCenterPoint()
-        p = mapPoints.Point("", "4286f4", self.gm, lt=center[0], lg=center[1])
+        p = mapPoints.Point("center", "", "4286f4", self.gm, lt=center[0], lg=center[1])
         jsonDict = {"center":{"lat": center[0], "lng": center[1]}, "markers":[x.getDict() for x in self.points]}
         jsonDict["markers"].append(p.getDict())
         return jsonDict
