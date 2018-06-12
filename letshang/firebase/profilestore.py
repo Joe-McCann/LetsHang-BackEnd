@@ -66,11 +66,11 @@ class ProfileStore(object):
         self.id = userId
         reference = db.collection(u'people').document(self.id)
 
-        logging.debug('Getting from Google = {id}'.format(id=self.id))
+        logging.debug('profilestore.py, getProfile, Getting from Google = {id}'.format(id=self.id))
 
         try:
             document = reference.get().to_dict()
-            logging.debug('getProfile retrieved {document} from Firebase'.format(document=document))
+            logging.debug('profilestore.py, getProfile, getProfile retrieved {document} from Firebase'.format(document=document))
             self.firstName = document['firstName']
             self.lastName = document['lastName']
             self.nickName = document['nickName']
@@ -78,11 +78,11 @@ class ProfileStore(object):
             self.address = document['address']
             self.email = document['email']
             self.newMember = False
-            logging.debug('User found {firstname} {lastname}'.format(firstname=self.firstName, lastname=self.lastName))
+            logging.debug('profilestore.py, getProfile, User found {firstname} {lastname}'.format(firstname=self.firstName, lastname=self.lastName))
             
         except google.cloud.exceptions.NotFound:
             # First we call Auth0 to obtain the user profile
-            logging.debug('User not found in getProfile userId = {userId}'.format(userId=userId))
+            logging.debug('profilestore.py, getProfile, User not found in getProfile userId = {userId}'.format(userId=userId))
             auth0User = User()
             auth0User.getUser(userId)
 
@@ -121,13 +121,13 @@ class ProfileStore(object):
         This function stores the current object properties in the Google Cloud Firestore.
         Use this method for adding new records to the database
         """
-        logging.debug('In add2Firebase id = {userId}'.format(userId=self.id))
+        logging.debug('profilestore.py, add2Firebase, In add2Firebase id = {userId}'.format(userId=self.id))
         db.collection(u'people').document(self.id).set(self.asJson())
 
         # We're not done yet. If this new profile is a new member registering, then we must
         # also give them a friend list. We determine this by scanning the user id.
         if self.notFromUs(self.id):
-            logging.debug('In add2Firebase checked notFromUs id = {userId}'.format(userId=self.id))
+            logging.debug('profilestore.py, add2Firebase, In add2Firebase checked notFromUs id = {userId}'.format(userId=self.id))
             store = FriendListStore()
             store.newFriends(self.id)
 
@@ -139,12 +139,12 @@ class ProfileStore(object):
 
         reference = db.collection(u'people').document(self.id)
 
-        logging.debug('Updating on Google = {id}'.format(id=self.id))
+        logging.debug('profilestore.py, updateProfiles, Updating on Google = {id}'.format(id=self.id))
 
         try:
             reference.update(self.asJson())
         except google.cloud.exceptions.NotFound:
-            logging.debug('User not found in updateProfile userId = {userId}'.format(userId=self.id))
+            logging.debug('profilestore.py, updateProfiles, User not found in updateProfile userId = {userId}'.format(userId=self.id))
             self.add2Firebase()
             
         return self
@@ -183,7 +183,7 @@ class ProfileStore(object):
         Convert a list of members ids to a list of profiles of the members
         """
 
-        logging.debug('Convert ids to profiles for {ids}'.format(ids=friendIds))
+        logging.debug('profilestore.py, ids2Profiles, Convert ids to profiles for {ids}'.format(ids=friendIds))
 
         userId = friendIds['id']
         friends = friendIds['friends']
@@ -204,6 +204,6 @@ class ProfileStore(object):
             }
             profileList.append(profile)
         
-        logging.debug('The friends are {profileList}'.format(profileList=profileList))
+        logging.debug('profilestore.py, ids2Profiles, The friends are {profileList}'.format(profileList=profileList))
         return profileList
         

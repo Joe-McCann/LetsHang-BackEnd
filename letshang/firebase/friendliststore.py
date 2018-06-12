@@ -23,7 +23,7 @@ class FriendListStore(object):
     def getFriends(self, userId):
         """
         getFriends method
-        This method retrieve the friends list from Firebase, then constructs full 
+        This method retrieves the friends list from Firebase, then constructs full 
         profiles for each friend
         """
 
@@ -38,10 +38,6 @@ class FriendListStore(object):
             logging.debug('Friends returns from Firebase {document}'.format(document=document))
             self.id = document['id']
             self.friends = document['friends']
-            # friendList = {
-            #     'id': self.id, 
-            #     'friends': self.friends
-            # }
             logging.debug('Found friend ids for {id} and {friends}'.format(id=self.id, friends=self.friends))
             return document
         except google.cloud.exceptions.NotFound as e:
@@ -51,7 +47,6 @@ class FriendListStore(object):
         except Exception as e:
             logging.error('Exception when retrieving friends for {id}'.format(id=self.id))
             logging.error(e)
-
 
     def saveFriends(self, friendList):
         """

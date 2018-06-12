@@ -3,6 +3,7 @@ import google.cloud.exceptions
 from ..firebase.friendliststore import FriendListStore
 from ..globals import db
 import logging
+import json
 
 class EventStore(object):
     """
@@ -46,7 +47,7 @@ class EventStore(object):
         logging.debug('eventsote.py, idDict, In idDict with {invited}'.format(invited=invited))
         ids = {}
         for profile in invited:
-            ids[ profile['id'] ] = True
+            ids[ self.pipe2Underscore(profile['id']) ] = True
 
         return ids
 
@@ -75,10 +76,20 @@ class EventStore(object):
         """
 
         data = {
-            'id': self.id,
-            'eventDescription': self.eventDescription,
-            'date': self.date,
-            'time': self.time,
-            'invited': self.invited
+           'id': self.id,
+           'eventDescription': self.eventDescription,
+           'date': self.date,
+           'time': self.time,
+           'invited': self.invited
         }
+        # data = json.dumps(data)
+        logging.debug('eventstore.py', 'asJson', '{data}'.format(data=data))
         return data
+
+    def pipe2Underscore(self, key):
+        """
+        pipe2Underscore
+        This method converts the pipe to an underscore when storing in a list of events. The underscore
+        is necessary because Firestore will not query the pipe character.
+        """
+        return key.replace("|", "_", 1)
