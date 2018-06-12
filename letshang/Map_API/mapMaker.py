@@ -16,7 +16,7 @@ class mapMaker:
         pass
 
     def getDict(self):
-        center = self.getCenterPoint()
+        center = self.gm.address_to_longlat(self.gm.longlat_to_addres(self.getCenterPoint()))
         p = mapPoints.Point("center", "", "4286f4", self.gm, lt=center[0], lg=center[1])
         jsonDict = {"center":{"lat": center[0], "lng": center[1]}, "markers":[x.getDict() for x in self.points]}
         jsonDict["markers"].append(p.getDict())
