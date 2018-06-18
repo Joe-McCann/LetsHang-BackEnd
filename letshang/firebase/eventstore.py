@@ -82,8 +82,6 @@ class EventStore(object):
            'time': self.time,
            'invited': self.invited
         }
-        # data = json.dumps(data)
-        logging.debug('eventstore.py', 'asJson', '{data}'.format(data=data))
         return data
 
     def pipe2Underscore(self, key):
