@@ -31,7 +31,7 @@ class ProfileStore(object):
         notNewSignup method
         check to see if the member id was created by Lets-Hang
         """
-        if userId.split("|")[0].lower() != "lets-hang":
+        if userId.split("|")[0].lower() != "LETSHANG":
             return True
         return False
 
