@@ -185,9 +185,12 @@ class ProfileStore(object):
 
         logging.debug('profilestore.py, ids2Profiles, Convert ids to profiles for {ids}'.format(ids=friendIds))
 
+        profileList = []
+        if friendIds == None:
+            return profileList   # If there are not friends, then return an empty list
+
         userId = friendIds['id']
         friends = friendIds['friends']
-        profileList = []
 
         for friend in friends:
             self.getProfile(friend)

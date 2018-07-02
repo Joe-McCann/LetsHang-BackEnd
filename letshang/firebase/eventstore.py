@@ -87,7 +87,9 @@ class EventStore(object):
     def pipe2Underscore(self, key):
         """
         pipe2Underscore
-        This method converts the pipe to an underscore when storing in a list of events. The underscore
-        is necessary because Firestore will not query the pipe character.
+        This method replace the pipe in an id with an underscore. This enables querying on the id.
+        7/2/2018: Adding support for the google-oauth keyword.
+        NOTE: This method is a copy of the pipe2Underscore in eventstore.py
         """
-        return key.replace("|", "_", 1)
+        newKey = key.replace("google-oauth2", "google_oauth2", 1)
+        return newKey.replace("|", "_", 1)

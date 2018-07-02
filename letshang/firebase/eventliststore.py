@@ -26,16 +26,20 @@ class EventListStore(object):
         underscore2Pipe
         This method replaces the underscore needed in the eventlist with the pipe character used
         by auth0 ids. Let's Hang uses the auth0 key for ids.
+        7/2/2018: Adding support for the google-oauth keyword.
         """
-        return key.replace("_", "|", 1)
+        newKey = key.replace("google_oauth2", "google-oauth2", 1)
+        return newKey.replace("_", "|", 1)
 
     def pipe2Underscore(self, key):
         """
         pipe2Underscore
         This method replace the pipe in an id with an underscore. This enables querying on the id.
+        7/2/2018: Adding support for the google-oauth keyword.
         NOTE: This method is a copy of the pipe2Underscore in eventstore.py
         """
-        return key.replace("|", "_", 1)
+        newKey = key.replace("google-oauth2", "google_oauth2", 1)
+        return newKey.replace("|", "_", 1)
 
     def getEvents(self, userId):
         """
