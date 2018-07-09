@@ -3,6 +3,7 @@
 import falcon
 import json
 import letshang.Map_API.mapMaker as mapMaker
+import logging
 from falcon_cors import CORS
 
 class mapResource(object):
@@ -35,9 +36,9 @@ class mapResource(object):
 
         if req.content_length:
             data =  json.loads(req.stream.read().decode('utf-8'))
-            print(data)
+            logging.info('map.py, on_post, {data}'.format(data=data))
             mMaker = mapMaker.mapMaker(data)
-            print(mMaker)
+            logging.info('map.py, on_post, {mMaker}'.format(mMaker=mMaker))
             ret_data = mMaker.getDict()
 
         resp.body = json.dumps(ret_data, ensure_ascii=False)
