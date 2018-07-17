@@ -23,6 +23,22 @@ class EventStore(object):
         self.time = ""
         self.invited = []
 
+    def GetEvent(self, id):
+        """
+        GetEvent retrieves an event from Firebase
+        """
+
+        logging.debug('eventstore.py, GetEvent, Get event {id}'.format(id=id))
+        reference = db.collection(u'event').document(self.id)
+        try:
+            document = reference.get().to_dict()
+            logging.debug('eventstore.py, getEvent, returned from Firebase {document}'.format(document=document))
+        except Exception as e:
+            logging.error('eventstore.py, GetEvent, Exception when retrieving event for {id}'.format(id=self.id))
+            logging.error(e)
+            return self
+
+
     def SetAll(self, event):
         """
         SetAll set event variables from an event object
@@ -64,7 +80,7 @@ class EventStore(object):
         try:
             reference.set(self.asJson())            
         except Exception as e:
-            logging.error('Exception when adding event for {id}'.format(id=self.id))
+            logging.error('eventstore.py, NewEvent, Exception when adding event for {id}'.format(id=self.id))
             logging.error(e)
 
         return self

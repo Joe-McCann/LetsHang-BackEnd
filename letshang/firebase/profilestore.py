@@ -24,7 +24,7 @@ class ProfileStore(object):
         self.email = ""
         self.newMember = True
 
-        logging.debug('Initialize the Profile Store')
+        logging.debug('profilestore.py, __init__, Initialize the Profile Store')
 
     def notFromUs(self, userId):
         """
@@ -106,7 +106,7 @@ class ProfileStore(object):
 
         reference = db.collection(u'people').document(self.id)
 
-        logging.debug('Adding to Google = {id}'.format(id=self.id))        
+        logging.debug('profilestore.py, addProfile, Adding to Google = {id}'.format(id=self.id))        
 
         try:
             self.add2Firebase()
@@ -158,7 +158,7 @@ class ProfileStore(object):
         try:
             db.collection(u'people').document(userId).delete()
         except google.cloud.exceptions.NotFound:
-            logging.error("Nothing to delete, id = {userId}".format(userId=userId))
+            logging.error("profilestore.py, deleteProfile, Nothing to delete, id = {userId}".format(userId=userId))
 
     def asJson(self):
         """

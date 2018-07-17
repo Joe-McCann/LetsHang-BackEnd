@@ -18,7 +18,7 @@ class FriendListStore(object):
         self.id = ""
         self.friends = []
 
-        logging.debug('Initialize the Friends Store')
+        logging.debug('friendliststore.py, __init__, Initialize the Friends Store')
 
     def getFriends(self, userId):
         """
@@ -32,20 +32,20 @@ class FriendListStore(object):
         self.id = userId
         reference = db.collection(u'friends').document(self.id)
 
-        logging.debug('Getting friends from Google = {id}'.format(id=self.id))
+        logging.debug('eventliststore.py, getFriends, Getting friends from Google = {id}'.format(id=self.id))
         try:
             document = reference.get().to_dict()
-            logging.debug('Friends returns from Firebase {document}'.format(document=document))
+            logging.debug('eventliststore.py, getFriends, Friends returns from Firebase {document}'.format(document=document))
             self.id = document['id']
             self.friends = document['friends']
-            logging.debug('Found friend ids for {id} and {friends}'.format(id=self.id, friends=self.friends))
+            logging.debug('eventliststore.py, getFriends, Found friend ids for {id} and {friends}'.format(id=self.id, friends=self.friends))
             return document
         except google.cloud.exceptions.NotFound as e:
             # TODO: friends not found exception
-            logging.error('Friends not found {id}'.format(id=self.id))
+            logging.error('eventliststore.py, getFriends, Friends not found {id}'.format(id=self.id))
             logging.error(e)
         except Exception as e:
-            logging.error('Exception when retrieving friends for {id}'.format(id=self.id))
+            logging.error('eventliststore.py, getFriends, Exception when retrieving friends for {id}'.format(id=self.id))
             logging.error(e)
 
     def saveFriends(self, friendList):
@@ -58,12 +58,12 @@ class FriendListStore(object):
         self.friends = self.idOnly(friendList['friends'])
 
         reference = db.collection(u'friends').document(self.id)
-        logging.debug('Updateing friends on Google = {id}'.format(id=self.id))
+        logging.debug('eventliststore.py, saveFriends, Updateing friends on Google = {id}'.format(id=self.id))
 
         try:
             reference.update(self.asJson())
         except google.cloud.exceptions.NotFound:
-            logging.debug('User not found in saveFriends userId = {userId}'.format(userId=self.id))
+            logging.debug('eventliststore.py, saveFriends, User not found in saveFriends userId = {userId}'.format(userId=self.id))
             self.newFriends(self.id)
             
         return self
@@ -76,14 +76,14 @@ class FriendListStore(object):
         """
 
         self.id = userId
-        logging.debug('In newFriends with {id} and {userId}'.format(id=self.id, userId=userId))
+        logging.debug('eventliststore.py, newFriends, In newFriends with {id} and {userId}'.format(id=self.id, userId=userId))
         reference = db.collection(u'friends').document(self.id)
-        logging.debug('Adding friends to Google = {id}'.format(id=self.id))
+        logging.debug('eventliststore.py, newFriends, Adding friends to Google = {id}'.format(id=self.id))
 
         try:
             db.collection(u'friends').document(self.id).set(self.asJson())            
         except Exception as e:
-            logging.error('Exception when adding friends for {id}'.format(id=self.id))
+            logging.error('eventliststore.py, newFriends, Exception when adding friends for {id}'.format(id=self.id))
             logging.error(e)
 
         return self

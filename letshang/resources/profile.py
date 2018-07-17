@@ -23,7 +23,7 @@ class ProfileResource(object):
         resp      HTTP response (outgoing)
         userId    The userID of the user's profile passed in the URI
         """
-        logging.debug('Get user = {userId}'.format(userId=userId))
+        logging.debug('profile.py, on_get, Get user = {userId}'.format(userId=userId))
         store = ProfileStore()
         store.getProfile(userId)
 
@@ -53,7 +53,7 @@ class ProfileResource(object):
         resp      HTTP response (outgoing)
         userId    The userID of the user's profile passed in the URI
         """
-        logging.debug('Put user = {userId}'.format(userId=userId))
+        logging.debug('profile.py, on_put, Put user = {userId}'.format(userId=userId))
 
         if req.content_length:
             store = ProfileStore()
@@ -86,7 +86,7 @@ class ProfileResource(object):
         resp      HTTP response (outgoing)
         userId    The userID of the user's profile passed in the URI
         """
-        logging.debug('Post user = {userId}'.format(userId=userId))
+        logging.debug('profile.py, on_post, Post user = {userId}'.format(userId=userId))
 
         if req.content_length:
             store = ProfileStore()

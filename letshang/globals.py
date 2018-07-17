@@ -32,7 +32,7 @@ def getAuth0Token():
         r = requests.post(base_url, data=payload)
         r.raise_for_status()
     except requests.exceptions.HTTPError as err:
-        logging.error("Error occured retrieving Auth0 access token.")
+        logging.error("globals.py, getAuth0Token, Error occured retrieving Auth0 access token.")
         logging.error(err)
         return None
 

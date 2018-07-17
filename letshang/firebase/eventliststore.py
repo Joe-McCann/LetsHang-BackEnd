@@ -19,7 +19,7 @@ class EventListStore(object):
         self.events = []
         self.profileStore = ProfileStore()
 
-        logging.debug('Initialize the Events Store')
+        logging.debug('eventliststore.py, __init__, Initialize the Events Store')
 
     def underscore2Pipe(self, key):
         """
@@ -70,7 +70,7 @@ class EventListStore(object):
 
             # self.id = document['id']
             # self.events = document['events']
-            logging.debug('Found events ids for {id} and {events}'.format(id=self.id, events=self.events))
+            logging.debug('eventliststore.py, getEvents, Found events ids for {id} and {events}'.format(id=self.id, events=self.events))
             return { 'events': self.events }
         except google.cloud.exceptions.NotFound as e:
             # TODO: events not found exception

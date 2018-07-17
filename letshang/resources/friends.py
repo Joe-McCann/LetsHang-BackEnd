@@ -24,12 +24,12 @@ class FriendsResource(object):
         resp      HTTP response (outgoing)
         userId    The userID for the person whose friends are retrieved
         """
-        logging.debug('Get friends = {userId}'.format(userId=userId))
+        logging.debug('friends.py, on_get, Get friends = {userId}'.format(userId=userId))
 
         # format the response 200
         friendStore = FriendListStore()
         friends = friendStore.getFriends(userId)
-        logging.debug('Returning friends for {friends}'.format(friends=friends))
+        logging.debug('friends.py, on_get, Returning friends for {friends}'.format(friends=friends))
         profileStore = ProfileStore()
         profiles = profileStore.ids2Profiles(friends)
 
@@ -52,12 +52,12 @@ class FriendsResource(object):
         resp      HTTP response (outgoing)
         userId    The userID of the user's friend list passed in the URI
         """
-        logging.debug('Put friend list = {userId}'.format(userId=userId))
+        logging.debug('friends.py, on_put, Put friend list = {userId}'.format(userId=userId))
 
         if req.content_length:
             store = FriendListStore()
             friends = json.loads(req.stream.read().decode('utf-8'))
-            logging.debug('putFriend request body is {friends}'.format(friends=friends))
+            logging.debug('friends.py, on_put, putFriend request body is {friends}'.format(friends=friends))
             store.saveFriends(friends)
         else:
             message = 'The body of the request must contain a list of friends'
