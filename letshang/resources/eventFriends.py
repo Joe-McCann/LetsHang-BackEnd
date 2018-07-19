@@ -26,4 +26,10 @@ class EventFriendsResource(object):
         This method handles the REST post verb.
         """
         logging.debug('eventFriends.py, on_delete, event = {eventId} and user = {userId}'.format(eventId=eventId, userId=userId))
-        event = self.store.GetEvent(eventId)
+        self.store.GetEvent(eventId)
+        self.store.RemovePerson(userId)
+        logging.debug('eventFriends.py, on_delete, number invited = {length}'.format(length=len(self.store.invited)))
+        if len(self.store.invited) > 0:
+            self.store.UpdateEvent()
+        else:
+            self.store.DeleteEvent()

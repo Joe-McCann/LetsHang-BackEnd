@@ -40,12 +40,12 @@ cors = CORS(allow_all_origins=True,
             allow_methods_list=['DELETE','GET','POST','PUT'])
 
 application = api = falcon.API(middleware=[ cors.middleware, AuthMiddleware() ])
+api.add_route('/event/{eventId}/friends/{userId}', EventFriendsResource())
 api.add_route('/events/{userId}', eventsResource())
 api.add_route('/event/{eventId}', EventResource())
 api.add_route('/map', mapResource())
 api.add_route('/profile/{userId}', ProfileResource())
 api.add_route('/friends/{userId}', FriendsResource())
-api.add_route('/event/{eventId}/friends/{userId}', EventFriendsResource())
 # api.add_route('/mapMaker', mapMaker())
 api.add_error_handler(Exception, generic_error_handler)
 

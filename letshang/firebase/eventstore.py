@@ -29,29 +29,51 @@ class EventStore(object):
         """
 
         logging.debug('eventstore.py, GetEvent, Get event {id}'.format(id=id))
+        self.id = id
         reference = db.collection(u'event').document(self.id)
         try:
-            document = reference.get().to_dict()
-            logging.debug('eventstore.py, getEvent, returned from Firebase {document}'.format(document=document))
+            event = reference.get().to_dict()
+            logging.debug('eventstore.py, getEvent, returned from Firebase {event}'.format(event=event))
+            self.SetDesc(event)
+            people = list(event['invited'])
+            self.invited = []
+            for person in people:
+                self.invited.append(self.underscore2Pipe(person))
+            logging.debug('eventstore.py, getEvents, Invited are {invited}'.format(invited=self.invited))
+            return self
         except Exception as e:
             logging.error('eventstore.py, GetEvent, Exception when retrieving event for {id}'.format(id=self.id))
             logging.error(e)
             return self
 
+    def RemovePerson(self, userId):
+        """
+        RemovePerson deletes an invited person from the invited list
+        """
+
+        self.invited.remove(userId)
+        logging.debug('eventstore.py, RemovePerson, Invited are {invited}'.format(invited=self.invited))
 
     def SetAll(self, event):
         """
         SetAll set event variables from an event object
         """
 
+        logging.debug('eventstore.py, SetDesc, In the SetAll method')
+        self.SetDesc(event)
+        self.invited = self.idDict(event['invited'])
+
+    def SetDesc(self, event):
+        """
+        SetDesc sets the event description variables from an event object
+        """
+        
         self.id = event['id']
-        logging.debug('eventstore.py, SetAll, Setting values for {id}'.format(id=self.id))
+        logging.debug('eventstore.py, SetDesc, Setting values for {id}'.format(id=self.id))
         self.eventDescription = event['eventDescription']
         self.date = event['date']
         self.time = event['time']
         
-        self.invited = self.idDict(event['invited'])
-
     def idDict(self, invited):
         """
         idDict method
@@ -60,7 +82,7 @@ class EventStore(object):
         against the list.
         """
 
-        logging.debug('eventsote.py, idDict, In idDict with {invited}'.format(invited=invited))
+        logging.debug('eventstore.py, idDict, In idDict with {invited}'.format(invited=invited))
         ids = {}
         for profile in invited:
             ids[ self.pipe2Underscore(profile['id']) ] = True
@@ -85,6 +107,37 @@ class EventStore(object):
 
         return self
 
+    def UpdateEvent(self):
+        """
+        newEvent method
+        This method updates an event. NOTE! The event data must already be stored this the class variables!
+        """
+
+        logging.debug('eventstore.py, UpdateEvent, In UpdateEvent with {id}'.format(id=self.id))
+        reference = db.collection(u'event').document(self.id)
+
+        try:
+            reference.update(self.asJson())            
+        except Exception as e:
+            logging.error('eventstore.py, NewEvent, Exception when adding event for {id}'.format(id=self.id))
+            logging.error(e)
+
+        return self
+
+    def DeleteEvent(self):
+        """
+        deleteEvent method
+        This function deletes an event from Firestore. NOTE! The event must already stored in this class.
+        """
+
+        logging.debug('eventstore.py, DeleteEvent, In DeleteEvent with {id}'.format(id=self.id))
+        reference = db.collection(u'event').document(self.id)
+
+        try:
+            reference.delete()
+        except google.cloud.exceptions.NotFound:
+            logging.error("eventstore.py, deleteevent, Nothing to delete, id = {userId}".format(userId=userId))
+
     def asJson(self):
         """
         asJson method
@@ -99,6 +152,16 @@ class EventStore(object):
            'invited': self.invited
         }
         return data
+
+    def underscore2Pipe(self, key):
+        """
+        underscore2Pipe
+        This method replaces the underscore needed in the eventlist with the pipe character used
+        by auth0 ids. Let's Hang uses the auth0 key for ids.
+        7/2/2018: Adding support for the google-oauth keyword.
+        """
+        newKey = key.replace("google_oauth2", "google-oauth2", 1)
+        return newKey.replace("_", "|", 1)
 
     def pipe2Underscore(self, key):
         """
