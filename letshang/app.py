@@ -23,7 +23,7 @@ ptvsd.enable_attach('fireupchips', address=('localhost', 8010))
 # print('connected')
 # -------------------------------------------------------------------------------
 
-logging.basicConfig(filename='letshang-backend.log', level=logging.DEBUG)
+logging.basicConfig(filename='letshang-backend.log', level=logging.ERROR)
 logging.info('*** Starting the Let\'s Hang Server ***')
 
 def generic_error_handler(ex, req, resp, params):

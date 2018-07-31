@@ -7,8 +7,8 @@ import json
 import requests
 import logging
 
-cred = credentials.Certificate('./letshang/firebase/letshang-version-000-firebase-adminsdk-4211i-c54a69eb6b.json')
-firebase_admin.initialize_app(cred, { 'projectId': 'letshang-version-000', })
+cred = credentials.Certificate('./letshang/firebase/letshang-v000-firebase-adminsdk-44oaf-cfef7bae9e.json')
+firebase_admin.initialize_app(cred, { 'projectId': 'letshang-v000', })
 db = firestore.client()
 
 def getAuth0Token():
