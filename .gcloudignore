@@ -1,6 +1,5 @@
 /.git*
 venv/
-lib/
 *.pyc
 *.log
 node_modules/
