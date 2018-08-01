@@ -1,0 +1,4 @@
+# Setting up the service hostname
+dispatch:
+  - url: "api.lethang.today"
+    service: python
