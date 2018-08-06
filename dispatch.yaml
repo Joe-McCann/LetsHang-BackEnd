@@ -1,4 +1,4 @@
 # Setting up the service hostname
 dispatch:
-  - url: "api.lethang.today"
+  - url: "api.letshang.today"
     service: api
