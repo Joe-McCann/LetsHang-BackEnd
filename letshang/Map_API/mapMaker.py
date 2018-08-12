@@ -4,7 +4,7 @@ import letshang.Map_API.graphFunctions as graph
 
 class mapMaker:
     def __init__(self, jsonReq):
-        self.gm = gmaps.GMaps('AIzaSyBwr2Jg9ExjdfNl_x-ElHZRoCwQCDmPcMc')
+        self.gm = gmaps.GMaps('AIzaSyBCOPpz9nItjNrXMrTbA71B0pCX2o5P1E8')
         self.points = []
         for key, values in jsonReq["mapData"].items():
             self.points.append(mapPoints.Point(key, values["address"], values["color"], self.gm))

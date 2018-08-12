@@ -2,7 +2,7 @@ from gmaps import GMaps
 from graphFunctions import *
 from mapPage import Map
 
-gmap = GMaps('AIzaSyBwr2Jg9ExjdfNl_x-ElHZRoCwQCDmPcMc')
+gmap = GMaps('AIzaSyBCOPpz9nItjNrXMrTbA71B0pCX2o5P1E8')
 page = Map()
 address_list = ['9 Appletree Drive, Matawan, NJ',
                 '23 Boxwood Circle, Edison, NJ']
