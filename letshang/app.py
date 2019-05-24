@@ -18,7 +18,7 @@ import logging
 import ptvsd
 #
 # address = ('localhost', 8010)
-ptvsd.enable_attach('fireupchips', address=('localhost', 8010))
+# ptvsd.enable_attach('fireupchips', address=('localhost', 8010))
 # ptvsd.wait_for_attach()
 # print('connected')
 # -------------------------------------------------------------------------------

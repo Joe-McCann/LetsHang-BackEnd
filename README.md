@@ -83,12 +83,18 @@ pip install -t lib -r requirements.txt
 
 Note that the last command is putting Falcon dependencies in a folder outside the virtual environment. This is so the Google App Engine can find the Falcon code.
 
+Be aware that if you need to update the requirements.txt package, the command is:
+
+```.bat
+pip freeze > requirements.txt
+```
+
 ## Step 6. Run the API ##
 
 Start the API with the following command ...
 
 ```.bat
-dev_appserver.py .
+gunicorn letshang.app
 ```
 
 Be aware that you must install the Google SDK (step 2 above) for this to work. Be sure that .py files are associated with Python.
