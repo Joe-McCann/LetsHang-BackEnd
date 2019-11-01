@@ -5,3 +5,5 @@
 *.log
 /node_modules
 /testing
+letshang/app.pyc
+letshang/middleware.pyc
