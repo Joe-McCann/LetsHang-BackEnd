@@ -1,0 +1,40 @@
+#
+# This builds a parent image for the Let's Hang frontend using the offical ubuntu base image.
+#
+# Author: B. McCann
+# Date:   1 Nov 2019
+#
+FROM ubuntu
+
+# Install the system software.
+# For some strange reason that I cannot explain, apt-get must be updated twice.
+
+RUN apt-get update
+RUN apt-get update
+RUN apt-get install -y python3
+RUN apt-get install -y python3-pip
+
+# Create the Python virtual environment
+RUN apt-get install -y virtualenv
+RUN virtualenv venv -p /usr/bin/python3
+RUN . /venv/bin/activate
+
+# Install Falcon and Gunicorn
+RUN apt-get install -y build-essential python3-dev
+RUN pip3 install cython
+RUN pip3 install --no-binary :all: falcon
+RUN pip3 install gunicorn
+
+# Install dependencies
+WORKDIR /LetsHang-FrontEnd
+COPY requirements.txt ./
+RUN pip3 install  --target ./venv/lib --requirement requirements.txt
+
+# install missing packages
+RUN pip3 install requests
+RUN pip3 install firebase_admin
+RUN pip3 install googlemaps
+RUN pip3 install gmaps 
+RUN pip3 install python-google-places
+RUN pip3 install falcon-cors
+RUN pip3 install ptvsd
